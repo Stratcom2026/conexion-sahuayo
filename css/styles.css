@@ -432,3 +432,93 @@ a { color: inherit; }
   *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
 
+/* iPhone / mobile reading mode and zoom */
+.reader-canvas {
+  touch-action: pan-y pinch-zoom;
+}
+
+.page-stage {
+  --zoom: 1;
+  --pan-x: 0px;
+  --pan-y: 0px;
+  transform: translate3d(var(--pan-x), var(--pan-y), 0) scale(var(--zoom));
+  will-change: transform;
+}
+
+.page-stage.zoom-animate {
+  transition: transform .2s ease;
+}
+
+.page-stage.is-zoomed .page-slot {
+  box-shadow: 0 22px 54px rgba(0,0,0,.46);
+}
+
+body.reader-focus-active {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.reader-shell.mobile-focus {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--reader);
+  box-shadow: none;
+}
+
+.reader-shell.mobile-focus .reader-toolbar {
+  flex: 0 0 auto;
+  height: calc(58px + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
+  padding-left: max(10px, env(safe-area-inset-left));
+  padding-right: max(10px, env(safe-area-inset-right));
+}
+
+.reader-shell.mobile-focus .reader-canvas {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 10px max(8px, env(safe-area-inset-right)) calc(34px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+.reader-shell.mobile-focus .reader-footer {
+  display: none;
+}
+
+.reader-shell.mobile-focus .swipe-hint {
+  display: block;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  white-space: nowrap;
+}
+
+.reader-shell.mobile-focus #fullscreenBtn {
+  background: rgba(255,255,255,.10);
+}
+
+@media (max-width: 680px) {
+  .reader-shell.mobile-focus .reader-toolbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .reader-shell.mobile-focus .page-indicator {
+    min-width: 100px;
+  }
+}
+
+
