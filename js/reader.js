@@ -2,6 +2,9 @@
   'use strict';
 
   const TOTAL_PAGES = 34;
+  const PAGE_WIDTH = 1241;
+  const PAGE_HEIGHT = 1595;
+  const SPREAD_GAP = 2;
   const pagePath = (n) => `pages/page-${String(n).padStart(2, '0')}.jpg`;
 
   const el = {
@@ -87,6 +90,30 @@
     });
   }
 
+  function fitStage(pageCount) {
+    const canvasStyle = window.getComputedStyle(el.readerCanvas);
+    const horizontalPadding = parseFloat(canvasStyle.paddingLeft) + parseFloat(canvasStyle.paddingRight);
+    const verticalPadding = parseFloat(canvasStyle.paddingTop) + parseFloat(canvasStyle.paddingBottom);
+
+    const availableWidth = Math.max(1, el.readerCanvas.clientWidth - horizontalPadding);
+    const availableHeight = Math.max(1, el.readerCanvas.clientHeight - verticalPadding);
+
+    const naturalWidth = (PAGE_WIDTH * pageCount) + (pageCount > 1 ? SPREAD_GAP : 0);
+    const naturalHeight = PAGE_HEIGHT;
+    const viewRatio = naturalWidth / naturalHeight;
+
+    let stageWidth = availableWidth;
+    let stageHeight = stageWidth / viewRatio;
+
+    if (stageHeight > availableHeight) {
+      stageHeight = availableHeight;
+      stageWidth = stageHeight * viewRatio;
+    }
+
+    el.pageStage.style.width = `${Math.floor(stageWidth)}px`;
+    el.pageStage.style.height = `${Math.floor(stageHeight)}px`;
+  }
+
   function render(direction = null) {
     currentPage = Math.max(1, Math.min(TOTAL_PAGES, currentPage));
     if (isSpread()) currentPage = normalizedSpreadPage(currentPage);
@@ -102,6 +129,7 @@
       setImage(el.rightPage, el.rightSlot, pages[1], false);
     }
 
+    fitStage(pages.length);
     updateIndicator(pages);
     el.prevBtn.disabled = currentPage <= 1;
     el.nextBtn.disabled = pages[pages.length - 1] >= TOTAL_PAGES;
@@ -258,3 +286,4 @@
   buildThumbnails();
   render();
 })();
+
