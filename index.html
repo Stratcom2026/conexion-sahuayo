@@ -8,10 +8,20 @@
   <meta name="description" content="Edición digital de Conexión Sahuayo — Septiembre · Octubre 2026." />
   <meta property="og:title" content="Conexión Sahuayo | Septiembre · Octubre 2026" />
   <meta property="og:description" content="Consulta la edición digital de Conexión Sahuayo." />
-  <meta property="og:image" content="pages/page-01.jpg" />
+  <meta property="og:image" content="https://stratcom2026.github.io/conexion-sahuayo/pages/page-01.jpg" />
+  <meta property="og:url" content="https://stratcom2026.github.io/conexion-sahuayo/" />
   <meta property="og:type" content="website" />
   <link rel="preload" as="image" href="pages/page-01.jpg" />
   <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8M7XT80J57"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8M7XT80J57');
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -138,5 +148,14 @@
 
   <noscript>Este lector requiere JavaScript. Puedes descargar directamente el PDF desde <a href="revista/conexion-sahuayo-sep-oct-2026.pdf">este enlace</a>.</noscript>
   <script src="js/reader.js"></script>
+  <script>
+    // Evento personalizado: clic en "Leer revista"
+    (function () {
+      var btn = document.getElementById('openReaderBtn');
+      if (btn && typeof gtag === 'function') {
+        btn.addEventListener('click', function () { gtag('event', 'abrir_lector'); });
+      }
+    })();
+  </script>
 </body>
 </html>
